@@ -1,43 +1,42 @@
-const form = document.getElementById("meme-form");
+const form = document.getElementById("form");
 const memesContainer = document.getElementById("memes-container");
+const imageUrl = document.getElementById("image-url");
+const topText = document.getElementById("topTextElement");
+const bottomText = document.getElementById("bottomTextElement");
 
-document.addEventListener("submit", e => {
+function createMeme(e) {
   e.preventDefault();
-
-  const imageUrl = document.getElementById("image-url").value;
-  const topText = document.getElementById("top-text").value;
-  const bottomText = document.getElementById("bottom-text").value;
-
+  //create div
   const memeDiv = document.createElement("div");
-  memeDiv.className = "meme";
-
+  memeDiv.classList.add("completedMeme");
+  //create img
   const memeImg = document.createElement("img");
-  memeImg.src = imageUrl;
-  memeDiv.appendChild(memeImg);
+  memeImg.classList.add("memeImg");
+  memeImg.setAttribute('src', imageUrl.value);
   
-
+  //toptext on meme
   const topTextElement = document.createElement("h2");
-  topTextElement.innerText = topText;
-  memeDiv.appendChild(topTextElement);
-
+  topTextElement.classList.add("topText");
+  topTextElement.innerText = topText.value.toUpperCase();
+  //bottomtext on meme
   const bottomTextElement = document.createElement("h3");
-  bottomTextElement.innerText = bottomText;
-  memeDiv.appendChild(bottomTextElement);
+  bottomTextElement.classList.add("bottomText");
+  bottomTextElement.innerText = bottomText.value.toUpperCase();
+  //add to the page
+   // Add to the page
+   memeDiv.append(memeImg, topTextElement, bottomTextElement);
+   memesContainer.append(memeDiv);
 
-  const removeButton = document.createElement("button");
-  removeButton.innerText = "Remove";
-  removeButton.className = "remove-button";
-  memeDiv.appendChild(removeButton);
+  imageUrl.value = "";
+  topTextElement.value = "";
+  bottomTextElement.value = "";  
+};
 
-  memesContainer.appendChild(memeDiv);
+form.addEventListener('submit', createMeme);
+memesContainer.addEventListener("click", deleteMeme);
 
-  document.getElementById("image-url").value = "";
-  document.getElementById("top-text").value = "";
-  document.getElementById("bottom-text").value = "";
-});
-
-memesContainer.addEventListener("click", e => {
-  if (e.target.className === "remove-button") {
-    e.target.parentElement.remove();
+function deleteMeme(e) {
+  if (e.target.tagName = "IMG") {
+    e.target.parentElement.remove()
   }
-});
+}
